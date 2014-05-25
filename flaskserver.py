@@ -1,10 +1,9 @@
 #-*- coding: utf8 -*-
 from flask import Flask, render_template, make_response, session, redirect, url_for, escape, request,jsonify,Response   
 import datetime
-from dateutil import parser
 import time as T, networkx as x, json # json.dumps
 import requests
-import MySQLdb, cPickle, numpy as n
+import cPickle
 
 app = Flask(__name__)
 
