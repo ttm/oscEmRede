@@ -12,9 +12,11 @@ node.select("text")
     if (Math.random()<0.01){
     ttext=d.name;
 } else {
+    tthis=0;
     ttext="";
 }
 return ttext; });
+
 node.select("circle").transition().duration(1000)
       .attr("r", function(d) { 
         if(Math.random()<0.001){
@@ -84,9 +86,9 @@ color = d3.scale.category20();
 height="300";
 width ="300";
 bb=tsvg[0][0];
-height=bb.clientHeight;
+height=Math.floor(bb.clientHeight*0.8);
 width =bb.clientWidth;
-tsvg.append("rect").attr("width","100%").attr("height","100%").style("fill","black");
+tsvg.append("rect").attr("width","100%").attr("height","100%").style("fill","#000");
 force = d3.layout.force()
     .charge(-120)
     .linkDistance(30)
@@ -146,14 +148,24 @@ node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"
 
 if (Meteor.isServer) {
     Meteor.methods({
+//       redeTeste: function () {
+//            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeTeste/"); },
+//       redeOSCs: function () {
+//            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeOSCs/"); },
+//       redeOSCs3: function () {
+//            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeOSCs3/"); },
+//       redeOSCs2: function () {
+//            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeOSCs2/"); },
+
        redeTeste: function () {
-            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeTeste/"); },
+            return Meteor.http.call("GET", "http://afternoon-fortress-1116.herokuapp.com/redeTeste/"); },
        redeOSCs: function () {
-            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeOSCs/"); },
+            return Meteor.http.call("GET", "http://afternoon-fortress-1116.herokuapp.com/redeOSCs/"); },
        redeOSCs3: function () {
-            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeOSCs3/"); },
+            return Meteor.http.call("GET", "http://afternoon-fortress-1116.herokuapp.com/redeOSCs3/"); },
        redeOSCs2: function () {
-            return Meteor.http.call("GET", "http://0.0.0.0:5000/redeOSCs2/"); },
+            return Meteor.http.call("GET", "http://afternoon-fortress-1116.herokuapp.com/redeOSCs2/"); },
+
     });
   Meteor.startup(function () {
     // code to run on server at startup

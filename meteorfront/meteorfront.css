@@ -1,4 +1,6 @@
 /* CSS declarations go here */
+body {
+background:#000;color:#bbaa88;font-family:Sans-serif;}
 .node {
   stroke: #fff;
   stroke-width: 1.5px;
