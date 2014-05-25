@@ -167,12 +167,12 @@ def rO():
     for node in nodes:
         #print node[1]
         nodes_+=[{"name":node[1]["tdata"]["nome"],"group":1,"degree":graus[node[0]],"clustering":clustering[node[0]]}]
-    edges=gg.edges()
+    edges=gg.edges(data=True)
     edges_=[]
     nodes=gg.nodes()
     for ee in edges:
         print ee
-        edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":1}]
+        edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":ee[2]["weight"]}]
     return jsonify(nodes=nodes_,links=edges_)
 
 @app.route("/redeOSCs3/")
@@ -184,13 +184,33 @@ def rO3():
     for node in nodes:
         #print node[1]
         nodes_+=[{"name":node[1]["tdata"]["nome"],"group":1,"degree":graus[node[0]],"clustering":clustering[node[0]]}]
-    edges=gg3.edges()
+    edges=gg3.edges(data=True)
     edges_=[]
     nodes=gg3.nodes()
     for ee in edges:
         print ee
-        edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":1}]
+        edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":ee[2]["weight"]}]
     return jsonify(nodes=nodes_,links=edges_)
+
+
+@app.route("/redeOSCs2/")
+def rO2():
+    graus=gg2.degree()
+    nodes=gg2.nodes(data=True)
+    nodes_=[]
+    for node in nodes:
+        #print node[1]
+        nodes_+=[{"name":node[1]["tdata"]["nome"],"group":1,"degree":graus[node[0]]}]
+    edges=gg2.edges(data=True,keys=True)
+    edges_=[]
+    edges2_=[]
+    nodes=gg2.nodes()
+    for ee in edges:
+        if ee[2]==0:
+            edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":ee[3]["weight"]}]
+        else:
+            edges2_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":ee[3]["weight"]}]
+    return jsonify(nodes=nodes_,links=edges_,links2=edges2_)
 
 
 
