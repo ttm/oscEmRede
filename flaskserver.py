@@ -101,13 +101,16 @@ for habs in habilitacoes_proponente:
 # talvez jah pegar tb areas de habilitacao 
 # e tb orgao conveniado
 
-g=x.MultiGraph()
+g2=x.MultiGraph()
+g=x.Graph()
+g3=x.Graph()
 
 i=0
 for prop in proponentes:
     #g.add_node(prop["id"],tdata=prop,conv=convenios_proponente[i],hab=habilitacoes_proponente[i]) #otimizar tdata
     g.add_node(prop["id"],tdata=prop,conv=convenios_proponente[i],hab=habilitacoes_proponente[i]) #otimizar tdata
     g2.add_node(prop["id"],tdata=prop,conv=convenios_proponente[i],hab=habilitacoes_proponente[i]) #otimizar tdata
+    g3.add_node(prop["id"],tdata=prop,conv=convenios_proponente[i],hab=habilitacoes_proponente[i]) #otimizar tdata
     i+=1
 
 i=0
@@ -127,10 +130,33 @@ for conv in convenios_proponente:
             id_prop1=proponentes[i]["id"]
             id_prop2=proponentes[j]["id"]
             g.add_edge(id_prop1,id_prop2,weight=peso)
+            g2.add_edge(id_prop1,id_prop2,0,weight=peso)
+            #g2.add_edge(id_prop1,id_prop2,1,weight=peso)
         j+=1
     i+=1
 gg=g
-
+i=0
+for hab in habilitacoes_proponente:
+    IDS0=[]
+    for hab_ in hab:
+        IDS0.append(hab_["subarea"]["SubAreaAtuacaoProponente"]["id"])
+    j=0
+    for hab2 in habilitacoes_proponente[i+1:]:
+        peso=0
+        for hab2_ in hab2:
+            oid=hab2_["subarea"]["SubAreaAtuacaoProponente"]["id"]
+            if oid in IDS0:
+                peso+=1
+                # tem aresta
+        if peso>0:
+            id_prop1=proponentes[i]["id"]
+            id_prop2=proponentes[j]["id"]
+            g3.add_edge(id_prop1,id_prop2,weight=peso)
+            g2.add_edge(id_prop1,id_prop2,1,weight=peso)
+        j+=1
+    i+=1
+gg2=g2
+gg3=g3
 
 @app.route("/redeOSCs/")
 def rO():
@@ -148,6 +174,24 @@ def rO():
         print ee
         edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":1}]
     return jsonify(nodes=nodes_,links=edges_)
+
+@app.route("/redeOSCs3/")
+def rO3():
+    graus=gg3.degree()
+    clustering=x.clustering(gg3)
+    nodes=gg3.nodes(data=True)
+    nodes_=[]
+    for node in nodes:
+        #print node[1]
+        nodes_+=[{"name":node[1]["tdata"]["nome"],"group":1,"degree":graus[node[0]],"clustering":clustering[node[0]]}]
+    edges=gg3.edges()
+    edges_=[]
+    nodes=gg3.nodes()
+    for ee in edges:
+        print ee
+        edges_+=[{"source":nodes.index(ee[0]),"target":nodes.index(ee[1]),"value":1}]
+    return jsonify(nodes=nodes_,links=edges_)
+
 
 
 @app.route("/redeTeste/")
