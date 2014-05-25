@@ -1,0 +1,19 @@
+O Temporal são as OSCs em Rede.
+
+Cérebro/nuvem -> chove gotas/vértices -> que possuem arestas/raios.
+
+Há 3 critérios para estabelecer arestas entre as OSCs:
+*) programa pelo qual foi conveniado
+*) órgão pelo qual foi conveniado
+*) área de habilitação
+
+Estes dados estão disponíveis no Siconv.
+
+Agradecimentos ao Hackaton das OSCs,
+à Rosangela Rocha, Renato Fabbri, William, Luis,
+Augusto, Rodrigo, André.
+
+TODO:
+*) Processamento de linguagem natural nas infos dos proponentes
+*) Armazenamento de dados local
+
