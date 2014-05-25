@@ -200,7 +200,7 @@ def rO2():
     nodes_=[]
     for node in nodes:
         #print node[1]
-        nodes_+=[{"name":node[1]["tdata"]["nome"],"group":1,"degree":graus[node[0]]}]
+        nodes_+=[{"name":node[1]["tdata"]["nome"],"group":1,"degree":graus[node[0]],"responsavel":node[1]["tdata"]["nome_responsavel"],"telefone":node[1]["tdata"]["telefone"]}]
     edges=gg2.edges(data=True,keys=True)
     edges_=[]
     edges2_=[]

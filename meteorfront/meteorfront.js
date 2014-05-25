@@ -1,5 +1,34 @@
 if (Meteor.isClient) {
+Meteor.setInterval(function () {
+  Session.set('time', new Date);
+}, 4000);
 Session.set("stats","orgao concedente");
+  Template.hello.tupdate= function () {
+    Session.get("time");
+    console.log("aqui");
+if(typeof node !== "undefined"){
+node.select("text")
+    .text(function(d) { 
+    if (Math.random()<0.01){
+    ttext=d.name;
+} else {
+    ttext="";
+}
+return ttext; });
+node.select("circle").transition().duration(1000)
+      .attr("r", function(d) { 
+        if(Math.random()<0.001){
+        acor="rgb("+Math.floor(256*Math.random())+","+Math.floor(256*Math.random())+","+Math.floor(256*Math.random())+")";
+            d3.select(this).style("fill",acor);
+            return d.degree+34;
+        } else {
+            d3.select(this)
+                  .style("fill", function(d) { return color(d.group); });
+            return d.degree+4;
+        }
+      });
+}
+};
   Template.hello.greeting = function () {
     return Session.get("stats");
   };
@@ -28,10 +57,12 @@ SWITCH=0;
         }
 
                     link
-                            .enter().insert("line")
+                            .enter().insert("line","g.node")
                               .attr("class", "link")
                               .style("stroke-width", function(d) { return Math.sqrt(d.value); });
         link.exit().remove();
+
+        d3.select("#changeButton").attr("value",Session.get("stats"));
 // var node = tsvg.selectAll("g.node")
 //            .data(force.nodes());
 //
@@ -49,9 +80,13 @@ SWITCH=0;
 //};
 Template.hello.rendered=function(){
     tsvg=d3.select("#svgTemporal");
-var color = d3.scale.category20();
+color = d3.scale.category20();
 height="300";
 width ="300";
+bb=tsvg[0][0];
+height=bb.clientHeight;
+width =bb.clientWidth;
+tsvg.append("rect").attr("width","100%").attr("height","100%").style("fill","black");
 force = d3.layout.force()
     .charge(-120)
     .linkDistance(30)
@@ -75,25 +110,25 @@ Meteor.call("redeOSCs2",function(error,result){
       .attr("class", "link")
       .style("stroke-width", function(d) { return Math.sqrt(d.value); });
 
-  var node = tsvg.selectAll(".node")
+  node = tsvg.selectAll(".node")
       .data(force.nodes())
     .enter().append("g")
       .attr("class", "node")
       .call(force.drag);
   
 node.append("circle")
-      .attr("r", 5)
+      //.attr("r", 5)
+      .attr("r", function(d) { ddd=d; return d.degree+4; })
       .style("fill", function(d) { ddd=d; return color(d.group); });
 
 node.append("text")
     .attr("x", 12)
     .attr("dy", ".35em")
     .text(function(d) { return ""; });
+    //.text(function(d) { return d.name; });
 
   node.append("title")
-      .text(function(d) { return d.name; });
-
-
+      .text(function(d) { return d.name+", responsável: "+d.responsavel +", telefone: "+ d.telefone; });
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
